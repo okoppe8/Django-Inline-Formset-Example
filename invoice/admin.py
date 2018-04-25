@@ -1,21 +1,18 @@
 from django.contrib import admin
 
-from .models import ItemGroup, Item, Invoice, InvoiceDetail
-
-
-@admin.register(ItemGroup)
-class ItemGroupAdmin(admin.ModelAdmin):
-    pass
+from .models import Item, Invoice, InvoiceDetail
 
 
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name', 'unit_price', 'order',)
+    list_editable = ('unit_price', 'order',)
+    ordering = ('order',)
 
 
 class InvoiceDetailInline(admin.TabularInline):
     model = InvoiceDetail
-    extra = 3
+    extra = 0
 
 
 @admin.register(Invoice)

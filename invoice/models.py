@@ -1,21 +1,7 @@
 from django.contrib.auth.models import User
 from django.core import validators
 from django.db import models
-
-
-class ItemGroup(models.Model):
-    name = models.CharField(
-        verbose_name='グループ名',
-        max_length=100,
-    )
-
-    order = models.IntegerField(
-        verbose_name='並び順',
-        validators=[validators.MinValueValidator(0)],
-    )
-
-    def __str__(self):
-        return self.name
+from django.urls import reverse
 
 
 class Item(models.Model):
@@ -24,10 +10,9 @@ class Item(models.Model):
         max_length=100,
     )
 
-    item_group = models.ForeignKey(
-        ItemGroup,
-        on_delete=models.CASCADE,
-        verbose_name='グループ',
+    unit_price = models.IntegerField(
+        verbose_name='単価',
+        validators=[validators.MinValueValidator(0)],
     )
 
     order = models.IntegerField(
@@ -35,18 +20,17 @@ class Item(models.Model):
         validators=[validators.MinValueValidator(0)],
     )
 
-    price = models.IntegerField(
-        verbose_name='単価',
-        validators=[validators.MinValueValidator(0)],
-    )
-
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = 'メニュー'
+        verbose_name_plural = 'メニュー'
+
 
 class Invoice(models.Model):
-    title = models.CharField(
-        verbose_name='タイトル',
+    customer = models.CharField(
+        verbose_name='顧客名',
         max_length=100,
     )
 
@@ -74,15 +58,28 @@ class Invoice(models.Model):
     )
 
     def __str__(self):
-        return self.title
+        return self.customer
+
+    class Meta:
+        verbose_name = '注文'
+        verbose_name_plural = '注文'
+
+    def get_absolute_url(self):
+        return reverse('detail', args=[str(self.id)])
 
 
 class InvoiceDetail(models.Model):
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    invoice = models.ForeignKey(
+        Invoice,
+        on_delete=models.CASCADE)
 
-    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
+    item = models.ForeignKey(
+        Item,
+        verbose_name='商品',
+        on_delete=models.CASCADE,
+    )
 
-    price = models.IntegerField(
+    unit_price = models.IntegerField(
         verbose_name='単価',
         validators=[validators.MinValueValidator(0)],
     )
