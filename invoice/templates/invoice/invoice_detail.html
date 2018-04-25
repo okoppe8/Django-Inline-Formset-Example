@@ -1,0 +1,25 @@
+{% extends "./_base.html" %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8 offset-sm-2">
+                <h2 class="text-center">詳細表示</h2>
+                <div class="clearfix">
+                    <div class="float-right mt-1 mb-3">
+                        <a class="btn btn-outline-secondary command" href="{% url 'delete' invoice.pk %}">削除</a>
+                        <a class="btn btn-outline-secondary command" href="{% url 'update' invoice.pk %}">編集</a>
+                        <a class="btn btn-outline-secondary command" href="{% url 'index' %}">戻る</a>
+                    </div>
+                </div>
+                <div>
+                    {% include "./invoice_detail_content.html" %}
+                </div>
+                <div class="float-right mt-1 mb-1">
+                    <a class="btn btn-outline-secondary command" href="{% url 'delete' invoice.pk %}">削除</a>
+                    <a class="btn btn-outline-secondary command" href="{% url 'update' invoice.pk %}">編集</a>
+                    <a class="btn btn-outline-secondary command" href="{% url 'index' %}">戻る</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

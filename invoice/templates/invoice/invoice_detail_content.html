@@ -1,0 +1,68 @@
+{% load humanize %}
+<div class="row">
+    <div class="col-3">
+        <p>顧客名</p>
+    </div>
+    <div class="col-9">
+        <p>{{ invoice.customer }}</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-3">
+        <p>登録日</p>
+    </div>
+    <div class="col-9">
+        <p>{{ invoice.created_at|date:"Y/m/d G:i:s" }}</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-3">
+        <p>担当者</p>
+    </div>
+    <div class="col-9">
+        <p>{{ invoice.created_by.get_full_name }}</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <table class="table table-sm table-striped table-bordered ">
+            <thead class="thead-dark">
+            <tr>
+                <th></th>
+                <th>商品名</th>
+                <th>単価</th>
+                <th>個数</th>
+                <th>合計</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for detail in invoice.invoicedetail_set.all %}
+                <tr>
+                    <td class="rownum"></td>
+                    <td>{{ detail.item }}</td>
+                    <td class="number">{{ detail.unit_price|intcomma:False }}</td>
+                    <td class="number">{{ detail.quantity|intcomma:False }}</td>
+                    <td class="number">{{ detail.amount|intcomma:False }} 円</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="3"></td>
+                <th>小計</th>
+                <td class="number">{{ invoice.sub_total|intcomma:False }} 円</td>
+            </tr>
+            <tr>
+                <td colspan="3"></td>
+                <th>消費税</th>
+                <td class="number">{{ invoice.tax|intcomma:False }} 円</td>
+            </tr>
+            <tr>
+                <td colspan="3"></td>
+                <th>合計</th>
+                <td class="number">{{ invoice.total_amount|intcomma:False }} 円</td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

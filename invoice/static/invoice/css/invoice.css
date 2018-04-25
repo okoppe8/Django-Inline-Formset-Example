@@ -1,0 +1,20 @@
+a.command {
+    width: 5em;
+}
+
+table {
+    counter-reset: number 0;
+}
+
+table td.rownum:before {
+    counter-increment: number 1;
+    content: counter(number) " ";
+}
+
+table td.number {
+    text-align: right;
+}
+
+table th {
+    text-align: center;
+}

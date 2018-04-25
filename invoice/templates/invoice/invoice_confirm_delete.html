@@ -1,0 +1,29 @@
+{% extends "./_base.html" %}
+<!--  -->
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8 offset-sm-2">
+                <h2 class="text-center">データ削除</h2>
+                <p>このデータを削除します。よろしいですか？</p>
+
+                <form action="" method="post" id="myform">
+                    {% csrf_token %}
+                    <div class="clearfix">
+                        <div class="float-right">
+                            <a class="btn btn-outline-secondary command" href="{% url 'detail' invoice.pk %}">戻る</a>
+                            <a class="btn btn-outline-secondary command save" href="#">削除</a>
+                        </div>
+                    </div>
+                    {% include "./invoice_detail_content.html" %}
+                    <div class="clearfix">
+                        <div class="float-right">
+                            <a class="btn btn-outline-secondary command" href="{% url 'detail' invoice.pk %}">戻る</a>
+                            <a class="btn btn-outline-secondary command save" href="#">削除</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

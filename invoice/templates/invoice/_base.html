@@ -1,0 +1,53 @@
+{% load static %}
+{% load bootstrap4 %}
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <!-- Required meta tags always come first -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>注文アプリ</title>
+    {# Load CSS and JavaScript #}
+    {% bootstrap_css %}
+    <link href="{% static "invoice/css/invoice.css" %}" rel="stylesheet">
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+        {% if request.user.is_authenticated %}
+            {{ request.user.get_full_name }}
+        {% endif %}</a>
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#Navber" aria-controls="Navber"
+            aria-expanded="false"
+            aria-label="ナビゲーションの切替">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="Navber">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'admin:index' %}">管理画面</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'admin:logout' %}">ログアウト</a>
+            </li>
+        </ul>
+    </div>
+    <!-- /.navbar-collapse -->
+</nav>
+{% block content %}
+{% endblock %}
+
+{% bootstrap_javascript jquery='full' %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+<script src="{% static "invoice/js/invoice.js" %}"></script>
+
+{% block bottom_script %}
+{% endblock bottom_script %}
+
+</body>
+
+</html>

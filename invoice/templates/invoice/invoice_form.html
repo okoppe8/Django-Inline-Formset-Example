@@ -1,0 +1,83 @@
+{% extends "./_base.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+    {{ form.certifications.errors }}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8 offset-sm-2">
+                <h2 class="text-center">注文登録</h2>
+                <div class="clearfix">
+                    <div class="float-right mt-3 mb-3">
+                        {% if object %}
+                            <a class="btn btn-outline-secondary command" href="{% url 'detail' invoice.pk %}">戻る</a>
+                        {% else %}
+                            <a class="btn btn-outline-secondary command" href="{% url 'index' %}">戻る</a>
+                        {% endif %}
+                        <a class="btn btn-outline-secondary command save" href="#">登録</a>
+                    </div>
+                </div>
+                <div>
+                    {% bootstrap_formset_errors formset %}
+                </div>
+                <form method="post" class="form" id="myform">
+                    {% csrf_token %}
+                    {{ formset.management_form }}
+                    {% bootstrap_field form.customer show_label=False %}
+                    <div>
+                        <table class="table table-striped">
+                            <tbody class="invoicedetail">
+                            {% for form in formset %}
+                                <tr>
+                                    <td class="align-middle rownum"></td>
+                                    <td>
+                                        {% bootstrap_field form.id show_label=False %}
+                                        {% bootstrap_field form.item show_label=False %}
+                                        {% bootstrap_field form.quantity show_label=False %}
+                                        {% bootstrap_field form.DELETE show_label=False field_class="float-right" %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <a href="#" class="btn btn-outline-secondary add-invoicedetail col-12">行を追加</a>
+                </form>
+                <div class="float-right mt-3 mb-3">
+                    {% if object %}
+                        <a class="btn btn-outline-secondary command" href="{% url 'detail' invoice.pk %}">戻る</a>
+                    {% else %}
+                        <a class="btn btn-outline-secondary command" href="{% url 'index' %}">戻る</a>
+                    {% endif %}
+                    <a class="btn btn-outline-secondary command save" href="#">登録</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block bottom_script %}
+    <script type="text/html" id="invoicedetail-template">
+        <tr id="invoicedetail-__prefix__">
+            <td class="align-middle rownum"></td>
+            <td>
+                {% bootstrap_field formset.empty_form.item show_label=False %}
+                {% bootstrap_field formset.empty_form.quantity show_label=False %}
+                {% bootstrap_field formset.empty_form.DELETE show_label=False field_class="float-right" %}
+            </td>
+        </tr>
+    </script>
+    <script>
+        $(function () {
+            $('.add-invoicedetail').click(function (e) {
+                e.preventDefault();
+                var count = parseInt($('#id_invoicedetail_set-TOTAL_FORMS').attr('value'), 10);
+                var tmplMarkup = $('#invoicedetail-template').html();
+                var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count)
+                console.log(compiledTmpl);
+                $('tbody.invoicedetail').append(compiledTmpl);
+                $('#id_invoicedetail_set-TOTAL_FORMS').attr('value', count + 1);
+            });
+        });
+    </script>
+{% endblock bottom_script %}
